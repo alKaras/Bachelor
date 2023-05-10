@@ -2,11 +2,8 @@ const express = require('express');
 const app = express();
 const config = require('./cfg');
 const cors = require('cors');
-const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const MONGOURL = `mongodb://${config.database.HOST}:${config.database.PORT}/${config.database.DBNAME}`;
-const jwt = require('jsonwebtoken');
-const SECRET_TOKEN = config.jwt.TOKEN;
 
 const UserRouter = require('./routes/userRouter');
 const UnitRouter = require('./routes/unitRouter');

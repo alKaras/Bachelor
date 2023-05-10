@@ -1,9 +1,7 @@
 const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('../cfg');
-require('../models/userModel');
-const User = mongoose.model("UserInfo");
+const User = require('../models/userModel');
 
 const register = async (req, res) => {
     const { fname, lname, patronimic, address, phoneNo, email, password } = req.body;
@@ -36,7 +34,7 @@ const login = async (req, res) => {
         return res.json({ error: "User is not found" });
     }
     if (await bcrypt.compare(password, user.password)) {
-        const token = jwt.sign({ email: user.email }, config.jwt.TOKEN, {
+        const token = jwt.sign({ usid: user._id, email: user.email }, config.jwt.TOKEN, {
             expiresIn: config.jwt.EXPIRESIN,
         })
 
@@ -46,7 +44,7 @@ const login = async (req, res) => {
             return res.json({ error: "error" });
         }
     }
-    return res.json({ status: "error", error: "Invalid Passowrd" });
+    return res.json({ status: "error", error: "Invalid Password" });
 }
 
 const getUsers = async (req, res) => {
@@ -57,11 +55,11 @@ const getUsers = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        const userId = req.params.id;
+        const userId = req.user._id;
         const user = await User.findByIdAndDelete({ userId });
 
-        if (!user){
-            return res.status(404).json({message: `cannot find user by id ${userId} `});
+        if (!user) {
+            return res.status(404).json({ message: `cannot find user by id ${userId} ` });
         }
         return res.status(200).json(user)
 

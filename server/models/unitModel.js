@@ -36,4 +36,5 @@ unitModelSchema.set('toJSON', {
     }
 })
 
-mongoose.model("UnitInfo", unitModelSchema);
+const Unit = mongoose.model("UnitInfo", unitModelSchema);
+module.exports = Unit;

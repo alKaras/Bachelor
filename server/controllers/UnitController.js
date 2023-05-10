@@ -1,12 +1,10 @@
-const mongoose = require('mongoose');
-require("../models/unitModel");
-const Unit = mongoose.model("UnitInfo");
+const Unit = require('../models/unitModel')
 
 const createUnit = async (req, res) => {
-    const { unitNo } = req.body;
-    const userId = req.user._id;
-
     try {
+        const { unitNo } = req.body;
+        const userId = req.user._id;
+
         const unit = await Unit.create({
             unitNo,
             owner: userId,
@@ -21,11 +19,14 @@ const createUnit = async (req, res) => {
 }
 
 const getUnits = async (req, res) => {
-    const userId = req.user._id;
+    try {
+        const userId = req.user._id;
+        const unitsById = await Unit.find({ owner: userId });
+        return res.status(200).json(unitsById);
 
-    const units = await Unit.findById({ userId });
-
-    return res.status(200).json(units);
+    } catch (error) {
+        return res.status(500).json({ error: "Something went wrong" });
+    }
 }
 
 module.exports = {
