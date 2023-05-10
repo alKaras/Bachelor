@@ -4,7 +4,7 @@ const config = require('../cfg');
 const User = require('../models/userModel');
 
 const register = async (req, res) => {
-    const { fname, lname, patronimic, address, phoneNo, email, password } = req.body;
+    const { fname, lname, patronimic, address, phoneNo, email, password, role } = req.body;
     const encryptedPassword = await bcrypt.hash(password, 10);
     try {
         const oldUser = await User.findOne({ email });
@@ -19,6 +19,7 @@ const register = async (req, res) => {
             phoneNo,
             email,
             password: encryptedPassword,
+            role,
         });
         return res.send({ status: "ok" })
     } catch (error) {
@@ -34,7 +35,7 @@ const login = async (req, res) => {
         return res.json({ error: "User is not found" });
     }
     if (await bcrypt.compare(password, user.password)) {
-        const token = jwt.sign({ usid: user._id, email: user.email }, config.jwt.TOKEN, {
+        const token = jwt.sign({ usid: user._id, email: user.email, role: user.role }, config.jwt.TOKEN, {
             expiresIn: config.jwt.EXPIRESIN,
         })
 

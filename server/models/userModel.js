@@ -4,34 +4,39 @@ const UserModelSchema = new mongoose.Schema(
     {
         fname: {
             type: String,
-            required: true,
+            require: true,
         },
         lname: {
             type: String,
-            required: true,
+            require: true,
         },
         patronimic: {
             type: String,
-            required: true,
+            require: true,
         },
         address: {
             type: String,
-            required: true,
+            require: true,
         },
         phoneNo: {
             type: String,
-            required: true,
+            require: true,
             unique: true,
         },
         email: {
             type: String,
-            required: true,
+            require: true,
             unique: true,
         },
         password: {
             type: String,
-            required: true,
-        }
+            require: true,
+        },
+        role: {
+            type: String,
+            require: true,
+            default: "user",
+        },
     },
     {
         collection: "UserInfo",

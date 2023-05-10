@@ -4,16 +4,16 @@ const unitModelSchema = new mongoose.Schema(
     {
         unitNo: {
             type: Number,
-            required: true,
+            require: true,
         },
         date: {
             type: Date,
-            required: true,
+            require: true,
             default: Date.now(),
         },
         owner: {
             type: mongoose.Types.ObjectId,
-            required: true,
+            require: true,
             ref: "UserInfo",
         },
 
