@@ -9,7 +9,7 @@ const register = async (req, res) => {
     try {
         const oldUser = await User.findOne({ email });
         if (oldUser) {
-            return res.json({ error: "Користувач уже існує, введіть інші дані" });
+            return res.json({ message: "Користувач уже існує, введіть інші дані" });
         }
         await User.create({
             fname,
@@ -21,31 +21,42 @@ const register = async (req, res) => {
             password: encryptedPassword,
             role,
         });
-        return res.json({ status: "Створено" })
+        return res.json({ message: "Створено" })
     } catch (error) {
-        res.json({ status: error })
+        res.json({ message: error })
     }
 }
 
 const login = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
+    try {
 
-    if (!user) {
-        return res.json({ error: "Користувача не знайдено" });
-    }
-    if (await bcrypt.compare(password, user.password)) {
-        const token = jwt.sign({ usid: user._id, email: user.email, role: user.role }, config.jwt.TOKEN, {
-            expiresIn: config.jwt.EXPIRESIN,
-        })
 
-        if (res.status(201)) {
-            return res.json({ status: "ок", bearerToken: token });
-        } else {
-            return res.json({ error: "Щось пішло не так" });
+        if (!user) {
+            return res.json({ message: "Користувача не знайдено, Введіть іншу почту" });
         }
+        if (await bcrypt.compare(password, user.password)) {
+            const token = jwt.sign({ usid: user._id, email: user.email, role: user.role }, config.jwt.TOKEN, {
+                expiresIn: config.jwt.EXPIRESIN,
+            })
+
+            if (res.status(201)) {
+                return res.json({
+                    status: "ок",
+                    user: user,
+                    token: token
+                });
+            } else {
+                return res.json({ message: "Щось пішло не так" });
+            }
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: "Користувача не знайдено"
+        });
     }
-    return res.json({ status: "error", error: "Неправильний пароль" });
+
 }
 
 const getUsers = async (req, res) => {
@@ -54,18 +65,36 @@ const getUsers = async (req, res) => {
     return res.status(200).json(users);
 }
 
+const getUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            res.status(404).json({
+                message: "Користувача не знайдено"
+            })
+        }
+        return res.status(200).json({
+            message: "Користувача знайдено",
+            user: user
+        })
+    } catch (error) {
+
+    }
+}
+
 const deleteUser = async (req, res) => {
     try {
         const userId = req.user._id;
         const user = await User.findByIdAndDelete({ userId });
 
         if (!user) {
-            return res.status(404).json({ error: `Не знайдено користувача за ID: ${userId} ` });
+            return res.status(404).json({ message: `Не знайдено користувача за ID: ${userId} ` });
         }
         return res.status(200).json(user)
 
     } catch (error) {
-        return res.status(500).json({ message: "Користувача не знайдено" });
+        return res.status(500).json({ message: "Користувача видалено" });
     }
 }
 
@@ -73,5 +102,6 @@ module.exports = {
     register,
     login,
     getUsers,
+    getUser,
     deleteUser
 }
