@@ -18,11 +18,6 @@ const UserModelSchema = new mongoose.Schema(
             type: String,
             require: true,
         },
-        phoneNo: {
-            type: String,
-            require: true,
-            unique: true,
-        },
         email: {
             type: String,
             require: true,

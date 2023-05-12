@@ -12,13 +12,10 @@ module.exports = async (req, res, next) => {
         const decodedToken = jwt.verify(token, config.jwt.TOKEN);
         const user = await User.findById(decodedToken.usid);
 
-        if (!user) {
-            throw new Error("Користувача не знайдено");
-        }
         req.user = user;
         next();
     } catch (error) {
-        res.status(401).json({ error: "Authentication failed" });
+        res.status(401).json({ error: "Автентифікація не пройдена. Немає доступу" });
     }
 }
 

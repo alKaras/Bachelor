@@ -4,7 +4,7 @@ const config = require('../cfg');
 const User = require('../models/userModel');
 
 const register = async (req, res) => {
-    const { fname, lname, patronimic, address, phoneNo, email, password, role } = req.body;
+    const { fname, lname, patronimic, address, email, password, role } = req.body;
     const encryptedPassword = await bcrypt.hash(password, 10);
     try {
         const oldUser = await User.findOne({ email });
@@ -16,7 +16,6 @@ const register = async (req, res) => {
             lname,
             patronimic,
             address,
-            phoneNo,
             email,
             password: encryptedPassword,
             role,
@@ -71,9 +70,7 @@ const getUser = async (req, res) => {
             message: "Користувача знайдено",
             user: user
         })
-    } catch (error) {
-
-    }
+    } catch (error) { }
 }
 
 const deleteUser = async (req, res) => {
