@@ -14,7 +14,7 @@ const createUnit = async (req, res) => {
             return res.json({ unit });
         }
     } catch (error) {
-        return res.send({ status: "error" });
+        return res.send({ error: "Не вдалось відправити показники" });
     }
 }
 
@@ -25,7 +25,7 @@ const getUnits = async (req, res) => {
         return res.status(200).json(unitsById);
 
     } catch (error) {
-        return res.status(500).json({ error: "Something went wrong" });
+        return res.status(500).json({ error: "Щось пішло не так" });
     }
 }
 

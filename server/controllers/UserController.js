@@ -9,7 +9,7 @@ const register = async (req, res) => {
     try {
         const oldUser = await User.findOne({ email });
         if (oldUser) {
-            return res.send({ error: "User already exists" });
+            return res.json({ error: "Користувач уже існує, введіть інші дані" });
         }
         await User.create({
             fname,
@@ -21,9 +21,9 @@ const register = async (req, res) => {
             password: encryptedPassword,
             role,
         });
-        return res.send({ status: "ok" })
+        return res.json({ status: "Створено" })
     } catch (error) {
-        res.send({ status: error })
+        res.json({ status: error })
     }
 }
 
@@ -32,7 +32,7 @@ const login = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-        return res.json({ error: "User is not found" });
+        return res.json({ error: "Користувача не знайдено" });
     }
     if (await bcrypt.compare(password, user.password)) {
         const token = jwt.sign({ usid: user._id, email: user.email, role: user.role }, config.jwt.TOKEN, {
@@ -40,12 +40,12 @@ const login = async (req, res) => {
         })
 
         if (res.status(201)) {
-            return res.json({ status: "ok", bearerToken: token });
+            return res.json({ status: "ок", bearerToken: token });
         } else {
-            return res.json({ error: "error" });
+            return res.json({ error: "Щось пішло не так" });
         }
     }
-    return res.json({ status: "error", error: "Invalid Password" });
+    return res.json({ status: "error", error: "Неправильний пароль" });
 }
 
 const getUsers = async (req, res) => {
@@ -60,12 +60,12 @@ const deleteUser = async (req, res) => {
         const user = await User.findByIdAndDelete({ userId });
 
         if (!user) {
-            return res.status(404).json({ message: `cannot find user by id ${userId} ` });
+            return res.status(404).json({ error: `Не знайдено користувача за ID: ${userId} ` });
         }
         return res.status(200).json(user)
 
     } catch (error) {
-        return res.status(500).json({ message: "User is not existed" });
+        return res.status(500).json({ message: "Користувача не знайдено" });
     }
 }
 

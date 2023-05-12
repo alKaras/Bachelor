@@ -7,7 +7,6 @@ const MONGOURL = `mongodb://${config.database.HOST}:${config.database.PORT}/${co
 
 const UserRouter = require('./routes/userRouter');
 const UnitRouter = require('./routes/unitRouter');
-// const fetchuser = require('./middleware')
 
 app.use(express.json());
 app.use(cors());
