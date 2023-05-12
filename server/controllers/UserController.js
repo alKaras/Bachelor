@@ -30,31 +30,24 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    try {
 
 
-        if (!user) {
-            return res.json({ message: "Користувача не знайдено, Введіть іншу почту" });
+    if (!user) {
+        return res.json({ message: "Користувача не знайдено, Введіть іншу почту" });
+    }
+    if (await bcrypt.compare(password, user.password)) {
+        const token = jwt.sign({ usid: user._id, email: user.email, role: user.role }, config.jwt.TOKEN, {
+            expiresIn: config.jwt.EXPIRESIN,
+        })
+
+        if (res.status(200)) {
+            return res.json({
+                userRole: user.role,
+                token: token
+            });
+        } else {
+            return res.json({ message: "Щось пішло не так" });
         }
-        if (await bcrypt.compare(password, user.password)) {
-            const token = jwt.sign({ usid: user._id, email: user.email, role: user.role }, config.jwt.TOKEN, {
-                expiresIn: config.jwt.EXPIRESIN,
-            })
-
-            if (res.status(201)) {
-                return res.json({
-                    status: "ок",
-                    user: user,
-                    token: token
-                });
-            } else {
-                return res.json({ message: "Щось пішло не так" });
-            }
-        }
-    } catch (error) {
-        return res.status(500).json({
-            message: "Користувача не знайдено"
-        });
     }
 
 }

@@ -5,5 +5,6 @@ const auth = require('../middleware/auth');
 
 router.post('/createUnit', auth, UnitController.createUnit);
 router.get('/getUnits', auth, UnitController.getUnits);
+router.get('/getAllUnits',  UnitController.getAllUnits);
 
 module.exports = router;

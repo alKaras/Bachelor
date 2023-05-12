@@ -28,8 +28,13 @@ const getUnits = async (req, res) => {
         return res.status(500).json({ error: "Щось пішло не так" });
     }
 }
+const getAllUnits = async (req, res) => {
+    const unitsAll = await Unit.find({});
+    return res.status(200).json(unitsAll);
+}
 
 module.exports = {
     createUnit,
     getUnits,
+    getAllUnits,
 }
