@@ -4,25 +4,29 @@ const config = require('../cfg');
 const User = require('../models/userModel');
 
 const register = async (req, res) => {
-    const { fname, lname, patronimic, address, email, password, role } = req.body;
+    const { fname, lname, patronimic, address, email, password } = req.body;
     const encryptedPassword = await bcrypt.hash(password, 10);
     try {
         const oldUser = await User.findOne({ email });
         if (oldUser) {
             return res.json({ message: "Користувач уже існує, введіть інші дані" });
         }
-        await User.create({
+        const newUser = await User.create({
             fname,
             lname,
             patronimic,
             address,
             email,
-            password: encryptedPassword,
-            role,
+            password: encryptedPassword
         });
-        return res.json({ message: "Створено" })
+        const user = await newUser.save();
+
+        return res.json({
+            user: user,
+            message: "Створено"
+        })
     } catch (error) {
-        res.json({ message: error })
+        res.json({ message: "Не вдалось створити акаунт" })
     }
 }
 

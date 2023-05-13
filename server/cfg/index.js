@@ -9,6 +9,6 @@ module.exports = {
     },
     "jwt": {
         TOKEN: 'asvasv7as7231hvsvas23as+*@#asfasfasgasdpwq[rspafasfklasiweqowe{Apssdfa[',
-        EXPIRESIN: '1h'
+        EXPIRESIN: '30d'
     }
 }
