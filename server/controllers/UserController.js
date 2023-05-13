@@ -41,8 +41,9 @@ const login = async (req, res) => {
 
         if (res.status(200)) {
             return res.json({
+                user: user,
                 userRole: user.role,
-                token: token
+                token: `Bearer ${token}`
             });
         } else {
             return res.json({ message: "Щось пішло не так" });
@@ -66,11 +67,16 @@ const getUser = async (req, res) => {
                 message: "Користувача не знайдено"
             })
         }
-        return res.status(200).json({
-            message: "Користувача знайдено",
-            user: user
+        const token = jwt.sign({ usid: user._id, email: user.email, role: user.role }, config.jwt.TOKEN, {
+            expiresIn: config.jwt.EXPIRESIN,
         })
-    } catch (error) { }
+        return res.status(200).json({
+            user: user,
+            token: `Bearer ${token}`
+        })
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
 }
 
 const deleteUser = async (req, res) => {
