@@ -4,10 +4,12 @@ const createUnit = async (req, res) => {
     try {
         const { unitNo } = req.body;
         const userId = req.user._id;
+        const userAddress = req.user.address;
 
         const unit = await Unit.create({
             unitNo,
             owner: userId,
+            ownerAddress: userAddress,
         })
 
         if (res.status(200)) {

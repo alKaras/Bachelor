@@ -16,6 +16,11 @@ const unitModelSchema = new mongoose.Schema(
             require: true,
             ref: "UserInfo",
         },
+        ownerAddress: {
+            type: String,
+            require: true,
+            ref: "UserInfo",
+        }
 
     },
     {
