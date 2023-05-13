@@ -36,7 +36,7 @@ const login = async (req, res) => {
 
 
     if (!user) {
-        return res.json({ message: "Користувача не знайдено, Введіть іншу почту" });
+        return res.status(401).json({ message: "Користувача не знайдено, Введіть іншу почту" });
     }
     if (await bcrypt.compare(password, user.password)) {
         const token = jwt.sign({ usid: user._id, email: user.email, role: user.role }, config.jwt.TOKEN, {
@@ -49,9 +49,9 @@ const login = async (req, res) => {
                 userRole: user.role,
                 token: `Bearer ${token}`
             });
-        } else {
-            return res.json({ message: "Щось пішло не так" });
         }
+    } else {
+        return res.status(401).json({ message: "Пароль не вірний" })
     }
 
 }
