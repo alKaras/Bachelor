@@ -11,7 +11,7 @@ const createUnit = async (req, res) => {
         })
 
         if (res.status(200)) {
-            return res.json({ unit });
+            return res.json({ unit: unit });
         }
     } catch (error) {
         return res.send({ message: "Не вдалось відправити показники" });
@@ -22,7 +22,7 @@ const getUnits = async (req, res) => {
     try {
         const userId = req.user._id;
         const unitsById = await Unit.find({ owner: userId });
-        return res.status(200).json(unitsById);
+        return res.status(200).json({ units: unitsById });
 
     } catch (error) {
         return res.status(500).json({ message: "Щось пішло не так" });
