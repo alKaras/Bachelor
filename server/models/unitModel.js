@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { dateFormat } = require("../utils");
 const unitModelSchema = new mongoose.Schema(
     {
         unitNo: {
@@ -28,18 +27,6 @@ const unitModelSchema = new mongoose.Schema(
 
     }
 )
-
-unitModelSchema.virtual('formattedDate').get(() => {
-    return dateFormat(this.date);
-})
-
-unitModelSchema.set('toJSON', {
-    virtuals: true,
-    transform: (doc, ret) => {
-        delete ret.date
-        delete ret.id
-    }
-})
 
 const Unit = mongoose.model("UnitInfo", unitModelSchema);
 module.exports = Unit;

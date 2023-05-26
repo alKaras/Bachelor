@@ -2,18 +2,25 @@ const mongoose = require('mongoose');
 
 const userServiceSchema = new mongoose.Schema(
     {
-        status: {
+        title: {
             type: String,
-            default: "Замовлено",
+            require: true,
         },
-        servtitle: {
-            type: String,
-            ref: "ServiceInfo",
-            required: true,
+        cost: {
+            type: Number,
+            require: true,
         },
         userid: {
             type: mongoose.Types.ObjectId,
             ref: "UserInfo",
+        },
+        useremail: {
+            type: String,
+            ref: "UserInfo",
+        },
+        status: {
+            type: String,
+            default: "Замовлено",
         },
         sendDate: {
             type: Date,
@@ -22,4 +29,5 @@ const userServiceSchema = new mongoose.Schema(
     }
 );
 
-mongoose.model("userService", userServiceSchema);
+const UserService = mongoose.model("userService", userServiceSchema);
+module.exports = UserService;

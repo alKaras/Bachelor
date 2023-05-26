@@ -32,7 +32,7 @@ const getUnits = async (req, res) => {
 }
 const getAllUnits = async (req, res) => {
     const unitsAll = await Unit.find({});
-    return res.status(200).json(unitsAll);
+    return res.status(200).json({ units: unitsAll });
 }
 
 module.exports = {

@@ -9,24 +9,24 @@ const register = async (req, res) => {
     try {
         const oldUser = await User.findOne({ email });
         if (oldUser) {
-            return res.json({ message: "Користувач уже існує, введіть інші дані" });
-        }
-        const newUser = await User.create({
-            fname,
-            lname,
-            patronimic,
-            address,
-            email,
-            password: encryptedPassword
-        });
-        const user = await newUser.save();
+            return res.status(401).json({ message: "Користувач уже існує, введіть інші дані" });
+        } else {
+            const newUser = await User.create({
+                fname,
+                lname,
+                patronimic,
+                address,
+                email,
+                password: encryptedPassword
+            });
+            const user = await newUser.save();
 
-        return res.json({
-            user: user,
-            message: "Створено"
-        })
+            return res.status(200).json({
+                user: user,
+            })
+        }
     } catch (error) {
-        res.json({ message: "Не вдалось створити акаунт" })
+        return res.status(401).json({ message: "Не вдалось створити акаунт" })
     }
 }
 
@@ -59,7 +59,7 @@ const login = async (req, res) => {
 const getUsers = async (req, res) => {
     const users = await User.find({});
 
-    return res.status(200).json(users);
+    return res.status(200).json({ users: users });
 }
 
 const getUser = async (req, res) => {
