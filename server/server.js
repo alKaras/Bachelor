@@ -7,6 +7,7 @@ const cors = require('cors');
 const UserRouter = require('./routes/userRouter');
 const UnitRouter = require('./routes/unitRouter');
 const ServiceRouter = require('./routes/serviceRouter');
+const PriceListRouter = require('./routes/pricelistRouter');
 
 app.use(express.json());
 app.use(cors());
@@ -32,3 +33,4 @@ mongoose
 app.use('/api/user', UserRouter);
 app.use('/api/unit', UnitRouter);
 app.use('/api/service', ServiceRouter);
+app.use('/api/prices', PriceListRouter);

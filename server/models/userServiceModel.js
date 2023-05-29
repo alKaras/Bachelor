@@ -2,21 +2,13 @@ const mongoose = require('mongoose');
 
 const userServiceSchema = new mongoose.Schema(
     {
-        title: {
-            type: String,
-            require: true,
-        },
-        cost: {
-            type: Number,
-            require: true,
-        },
         userid: {
             type: mongoose.Types.ObjectId,
             ref: "UserInfo",
         },
         type: {
             type: String,
-            enum: ["Встановлення сонячних панелей", "Відключення електроенергії", "Підключення електроенергії"],
+            enum: ["sunpanels", "powercut", "powerconnect"],
             require: true,
         },
         useremail: {

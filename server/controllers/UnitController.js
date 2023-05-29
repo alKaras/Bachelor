@@ -34,18 +34,33 @@ const getAllUnits = async (req, res) => {
     const unitsAll = await Unit.find({});
     return res.status(200).json({ units: unitsAll });
 }
-const deleteUnitById = async(req, res) => {
+const deleteUnitById = async (req, res) => {
     try {
         const unitID = req.params.unitid.toString();
         const delUnitbyID = await Unit.findByIdAndDelete(unitID);
-        return res.status(200).json({deletedunit: delUnitbyID});
+        return res.status(200).json({ deletedunit: delUnitbyID });
     } catch (error) {
-        return res.status(500).json({message: "Не вдалось видалити запис"});
+        return res.status(500).json({ message: "Не вдалось видалити запис" });
     }
+}
+
+const getSumofUnitsById = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const sum = await Unit.aggregate([
+            {$match: {owner: userId}},
+            { $group: { _id: null, total: { $sum: '$unitNo' } } },
+        ]);
+        res.status(200).json({ sumunits: sum[0].total });
+    } catch (error) {
+        return res.status(500).json({message: "Не вдалося зробити операцію"})
+    }
+
 }
 module.exports = {
     createUnit,
     getUnits,
     getAllUnits,
     deleteUnitById,
+    getSumofUnitsById,
 }

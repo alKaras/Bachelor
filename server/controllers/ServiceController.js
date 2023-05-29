@@ -4,9 +4,8 @@ const createService = async (req, res) => {
     try {
         const uid = req.user._id;
         const uemail = req.user.email;
-        const { title, cost } = req.body;
+        const { cost } = req.body;
         const newService = await Service.create({
-            title,
             cost,
             userid: uid,
             useremail: uemail,
@@ -38,6 +37,7 @@ const getServById = async (req, res) => {
         return res.status(500).json({ message: "Щось пішло не так" });
     }
 }
+
 
 module.exports = {
     createService,
