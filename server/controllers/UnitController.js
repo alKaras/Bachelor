@@ -34,9 +34,18 @@ const getAllUnits = async (req, res) => {
     const unitsAll = await Unit.find({});
     return res.status(200).json({ units: unitsAll });
 }
-
+const deleteUnitById = async(req, res) => {
+    try {
+        const unitID = req.params.unitid.toString();
+        const delUnitbyID = await Unit.findByIdAndDelete(unitID);
+        return res.status(200).json({deletedunit: delUnitbyID});
+    } catch (error) {
+        return res.status(500).json({message: "Не вдалось видалити запис"});
+    }
+}
 module.exports = {
     createUnit,
     getUnits,
     getAllUnits,
+    deleteUnitById,
 }

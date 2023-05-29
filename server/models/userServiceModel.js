@@ -14,13 +14,18 @@ const userServiceSchema = new mongoose.Schema(
             type: mongoose.Types.ObjectId,
             ref: "UserInfo",
         },
+        type: {
+            type: String,
+            enum: ["Встановлення сонячних панелей", "Відключення електроенергії", "Підключення електроенергії"],
+            require: true,
+        },
         useremail: {
             type: String,
             ref: "UserInfo",
         },
         status: {
-            type: String,
-            default: "Замовлено",
+            type: Boolean,
+            default: false,
         },
         sendDate: {
             type: Date,

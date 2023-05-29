@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../cfg');
 const User = require('../models/userModel');
+const { default: mongoose } = require('mongoose');
 
 const register = async (req, res) => {
     const { fname, lname, patronimic, address, email, password } = req.body;
@@ -85,16 +86,19 @@ const getUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        const userId = req.user._id;
-        const user = await User.findByIdAndDelete({ userId });
+        const userId = req.params.id.toString();
+        console.log(userId);
+        const user = await User.findByIdAndDelete(userId);
 
         if (!user) {
             return res.status(404).json({ message: `Не знайдено користувача за ID: ${userId} ` });
         }
-        return res.status(200).json(user)
+        return res.status(200).json({deleteduser: user})
 
     } catch (error) {
-        return res.status(500).json({ message: "Користувача видалено" });
+        console.log(error);
+        return res.status(500).json({ message: "Користувача не видалено" });
+        
     }
 }
 
