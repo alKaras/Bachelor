@@ -4,9 +4,9 @@ const createService = async (req, res) => {
     try {
         const uid = req.user._id;
         const uemail = req.user.email;
-        const { cost } = req.body;
+        const { type } = req.body;
         const newService = await Service.create({
-            cost,
+            type,
             userid: uid,
             useremail: uemail,
         });
