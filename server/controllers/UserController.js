@@ -79,7 +79,7 @@ const getUser = async (req, res) => {
             token: `Bearer ${token}`
         })
     } catch (error) {
-        res.status(404).json({ message: error.message })
+        res.status(404).json({ message: "Не вдалось знайти користувача" })
     }
 }
 
