@@ -48,14 +48,24 @@ const getSumofUnitsById = async (req, res) => {
     try {
         const userId = req.user._id;
         const sum = await Unit.aggregate([
-            {$match: {owner: userId}},
+            { $match: { owner: userId } },
             { $group: { _id: null, total: { $sum: '$unitNo' } } },
         ]);
         res.status(200).json({ sumunits: sum[0].total });
     } catch (error) {
-        return res.status(500).json({message: "Не вдалося зробити операцію"})
+        return res.status(500).json({ message: "Не вдалося зробити операцію" })
     }
+}
 
+const getSumofAllUnits = async (req, res) => {
+    try {
+        const sumall = await Unit.aggregate([
+            { $group: { _id: null, total: { $sum: '$unitNo' } } },
+        ]);
+        res.status(200).json({ sumalunits: sumall[0].total });
+    } catch (error) {
+        return res.status(500).json({ message: "Не вдалось зробити операцію" });
+    }
 }
 module.exports = {
     createUnit,
@@ -63,4 +73,5 @@ module.exports = {
     getAllUnits,
     deleteUnitById,
     getSumofUnitsById,
+    getSumofAllUnits,
 }

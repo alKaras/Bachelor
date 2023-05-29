@@ -8,4 +8,5 @@ router.get('/getUnits', auth, UnitController.getUnits);
 router.get('/getAllUnits',  UnitController.getAllUnits);
 router.delete('/deleteunit/:unitid', UnitController.deleteUnitById);
 router.get('/getSumUserUnits', auth, UnitController.getSumofUnitsById);
+router.get('/getsumallunits', UnitController.getSumofAllUnits);
 module.exports = router;
