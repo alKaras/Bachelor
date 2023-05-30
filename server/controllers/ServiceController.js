@@ -33,7 +33,17 @@ const updateStatusServ = async (req, res) => {
         const updatedService = await Service.findByIdAndUpdate(servID, { status: true });
         return res.status(200).json({ updated: updatedService });
     } catch (error) {
-        return res.status(200).json({ message: "Не вдалось виконати редагування" })
+        return res.status(500).json({ message: "Не вдалось виконати редагування" })
+    }
+}
+
+const deleteService = async (req, res) => {
+    try {
+        const servID = req.params.servid.toString();
+        const deletedService = await Service.findByIdAndDelete(servID);
+        return res.status(200).json({ deleted: deletedService });
+    } catch (error) {
+        return res.status(500).json({ message: "Не вдалось виконати операцію" })
     }
 }
 const getServById = async (req, res) => {
@@ -52,4 +62,5 @@ module.exports = {
     getServById,
     getServices,
     updateStatusServ,
+    deleteService,
 }

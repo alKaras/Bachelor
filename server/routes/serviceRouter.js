@@ -7,5 +7,6 @@ router.post('/createService', auth, ServiceController.createService);
 router.get('/getUserService', auth, ServiceController.getServById);
 router.get('/getServices', ServiceController.getServices);
 router.put('/updateStatus/:servid', ServiceController.updateStatusServ);
+router.delete('/deleteService/:servid', ServiceController.deleteService);
 
 module.exports = router;
