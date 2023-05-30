@@ -24,9 +24,18 @@ const createService = async (req, res) => {
 
 const getServices = async (req, res) => {
     const services = await Service.find({});
-    return res.status(200).json({ services: services });
+    return res.status(200).json({ servs: services });
 }
 
+const updateStatusServ = async (req, res) => {
+    try {
+        const servID = req.params.servid.toString();
+        const updatedService = await Service.findByIdAndUpdate(servID, { status: true });
+        return res.status(200).json({ updated: updatedService });
+    } catch (error) {
+        return res.status(200).json({ message: "Не вдалось виконати редагування" })
+    }
+}
 const getServById = async (req, res) => {
     try {
         const uid = req.user._id;
@@ -38,9 +47,9 @@ const getServById = async (req, res) => {
     }
 }
 
-
 module.exports = {
     createService,
     getServById,
     getServices,
+    updateStatusServ,
 }

@@ -67,6 +67,11 @@ const getSumofAllUnits = async (req, res) => {
         return res.status(500).json({ message: "Не вдалось зробити операцію" });
     }
 }
+
+const getAmountUnits = async(req, res) => {
+    const amountUnits = await Unit.countDocuments({});
+    return res.status(200).json({ amountunits: amountUnits })
+}
 module.exports = {
     createUnit,
     getUnits,
@@ -74,4 +79,5 @@ module.exports = {
     deleteUnitById,
     getSumofUnitsById,
     getSumofAllUnits,
+    getAmountUnits,
 }

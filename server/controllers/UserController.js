@@ -63,6 +63,11 @@ const getUsers = async (req, res) => {
     return res.status(200).json({ users: users });
 }
 
+const getAmountUsers = async (req, res) => {
+    const amountUsers = await User.countDocuments({});
+    return res.status(200).json({ amount: amountUsers })
+}
+
 const getUser = async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
@@ -93,12 +98,12 @@ const deleteUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: `Не знайдено користувача за ID: ${userId} ` });
         }
-        return res.status(200).json({deleteduser: user})
+        return res.status(200).json({ deleteduser: user })
 
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Користувача не видалено" });
-        
+
     }
 }
 
@@ -107,5 +112,6 @@ module.exports = {
     login,
     getUsers,
     getUser,
-    deleteUser
+    deleteUser,
+    getAmountUsers,
 }
