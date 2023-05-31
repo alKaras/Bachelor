@@ -25,6 +25,7 @@ const MongoURL = process.env.MONGODB;
 mongoose
     .connect(MongoURL, {
         useNewUrlParser: true,
+        useNewTopology: true,
     })
     .then(() => console.log('Connected to DB successfully'))
     .catch(() => console.log('Cannot connect to DB'));
