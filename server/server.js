@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const config = require('./cfg');
 const cors = require('cors');
-
+require('dotenv').config();
 
 const UserRouter = require('./routes/userRouter');
 const UnitRouter = require('./routes/unitRouter');
@@ -20,9 +20,10 @@ app.listen(config.host.PORT, () => {
 
 /* CONNECT TO MONGODB */
 const mongoose = require('mongoose');
-const MONGOURL = `mongodb://${config.database.HOST}:${config.database.PORT}/${config.database.DBNAME}`;
+// const MONGOURL = `mongodb://${config.database.HOST}:${config.database.PORT}/${config.database.DBNAME}`;
+const MongoURL = process.env.MONGODB;
 mongoose
-    .connect(MONGOURL, {
+    .connect(MongoURL, {
         useNewUrlParser: true,
     })
     .then(() => console.log('Connected to DB successfully'))
