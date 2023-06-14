@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const config = require('./cfg');
 const cors = require('cors');
-require('dotenv').config();
 
 const UserRouter = require('./routes/userRouter');
 const UnitRouter = require('./routes/unitRouter');
@@ -20,12 +19,11 @@ app.listen(config.host.PORT, () => {
 
 /* CONNECT TO MONGODB */
 const mongoose = require('mongoose');
-// const MONGOURL = `mongodb://${config.database.HOST}:${config.database.PORT}/${config.database.DBNAME}`;
-const MongoURL = process.env.MONGODB;
+const MONGOURL = `mongodb://${config.database.HOST}:${config.database.PORT}/${config.database.DBNAME}`;
+
 mongoose
-    .connect(MongoURL, {
+    .connect(MONGOURL, {
         useNewUrlParser: true,
-        useNewTopology: true,
     })
     .then(() => console.log('Connected to DB successfully'))
     .catch(() => console.log('Cannot connect to DB'));
